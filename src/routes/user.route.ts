@@ -1,29 +1,12 @@
-// import userController from "@controller/user.controller";
-// import { Router } from "express";
-
-// const router = Router();
-
-// router.get("/", userController.getUser);
-
-// export { router as userRouter };
-
-// routes/user.route.ts
-
-// import { Router } from "express";
-// import { getAllUsers } from "@controller/user.controller";
-
-// const router = Router();
-
-// router.get("/", getAllUsers);
-
-// export { router as userRouter };
+// src/routes/user.route.ts
 
 import { Router } from "express";
-import { getAllUsers, createUser } from "../controller/user.controller"; 
+import { UserController } from "../controller/user.controller"; 
 
 const router = Router();
 
-router.get("/", getAllUsers);
-router.post("/", createUser);
+router.get("/", UserController.getAll);
+router.post("/", UserController.create);
+router.delete("/:id", UserController.deleteUserById);  
 
 export { router as userRouter };
