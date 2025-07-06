@@ -12,7 +12,7 @@ export class RoleController {
     const getAllRoles = await Role.findAll();
     res.send(getAllRoles);
   }
-  async saveRole(req:Request, res:Response) {
+  async createRole(req:Request, res:Response) {
     const request: IRoleRequest = req.body;
     const newRole = await Role.create();
     newRole.name = request.name;

@@ -8,7 +8,7 @@ export class UserController {
     res.json(users);
   }
 
-  static async create(req: Request, res: Response) {
+  static async createUser(req: Request, res: Response) {
     const { name, email, username, phone, website, address, company } = req.body;
     const newUser = await User.create({ name, email, username, phone, website, address, company });
     res.status(201).json(newUser);
