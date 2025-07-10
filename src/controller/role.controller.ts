@@ -8,10 +8,13 @@ interface IRoleRequest {
 
 
 export class RoleController {
-  async getAll(req:Request, res:Response) {
-    const getAllRoles = await Role.findAll();
-    res.send(getAllRoles);
-  }
+  async getAll(req: Request, res: Response) {
+  const roles = await Role.findAll({
+    attributes: { exclude: ['created_at', 'updated_at'] }
+  });
+  res.send(roles);
+}
+
   async createRole(req:Request, res:Response) {
     const request: IRoleRequest = req.body;
     const newRole = await Role.create();
@@ -22,11 +25,14 @@ export class RoleController {
     res.send(newRole);
   }
 
-  async getRoleById(req:Request, res:Response) {
-    const roleId = req.params.id;
-    const getRoleById = await Role.findByPk(roleId);
-    res.send(getRoleById);
-  }
+ async getRoleById(req: Request, res: Response) {
+  const roleId = req.params.id;
+  const role = await Role.findByPk(roleId, {
+    attributes: { exclude: ['created_at', 'updated_at'] }
+  });
+  res.send(role);
+}
+
 
   async deleteRoleById(req:Request, res:Response) {
     const roleId = req.params.id;

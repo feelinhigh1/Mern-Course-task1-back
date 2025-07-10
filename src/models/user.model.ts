@@ -15,6 +15,8 @@ export const User = sequelize.define("user", {
   website: DataTypes.STRING,
   address: DataTypes.JSON,   // address as JSON object
   company: DataTypes.JSON,   // company as JSON object
+},{
+  timestamps: true, // adds createdAt and updatedAt fields
 });
 
 
