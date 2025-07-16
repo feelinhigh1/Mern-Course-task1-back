@@ -1,22 +1,54 @@
-// models/user.model.ts
-import { DataTypes } from "sequelize";
-import sequelize from "../config/config";
+import {
+  AutoIncrement,
+  Column,
+  DataType,
+  Model,
+  PrimaryKey,
+  Table,
+} from "sequelize-typescript";
 
-export const User = sequelize.define("user", {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  name: DataTypes.STRING,
-  email: DataTypes.STRING,
-  username: DataTypes.STRING,
-  phone: DataTypes.STRING,
-  website: DataTypes.STRING,
-  address: DataTypes.JSON,   // address as JSON object
-  company: DataTypes.JSON,   // company as JSON object
-},{
-  timestamps: true, // adds createdAt and updatedAt fields
-});
+interface Address {
+  street: string;
+  suite?: string;
+  city: string;
+  zipcode?: string;
+}
 
+interface Company {
+  name: string;
+}
 
+@Table({
+  tableName: "users",
+  createdAt: "created_at",
+  updatedAt: "updated_at",
+})
+export class User extends Model<User> {
+  @AutoIncrement
+  @PrimaryKey
+  @Column
+  public id?: number;
+
+  @Column({ type: DataType.STRING })
+  public name!: string;
+
+  @Column({ type: DataType.STRING })
+  public email!: string;
+
+  @Column({ type: DataType.STRING })
+  public username!: string;
+
+  @Column({ type: DataType.STRING })
+  public phone!: string;
+
+  @Column({ type: DataType.STRING })
+  public website!: string;
+
+  // JSON column for Address
+  @Column({ type: DataType.JSON })
+  public address!: Address;
+
+  // JSON column for Company
+  @Column({ type: DataType.JSON })
+  public company!: Company;
+}

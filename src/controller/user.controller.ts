@@ -1,47 +1,67 @@
-// controllers/user.controller.ts
+import { User } from "@models/user.model";
 import { Request, Response } from "express";
-import { User } from "../models/user.model";
+
+interface IUserRequest {
+  name: string;
+  email: string;
+  username: string;
+  phone: string;
+  website: string;
+  address: {
+    street: string;
+    suite?: string;
+    city: string;
+    zipcode?: string;
+  };
+  company: {
+    name: string;
+  };
+}
 
 export class UserController {
-  static async getAll(req: Request, res: Response) {
-    const users = await User.findAll();
-    res.json(users);
+  async getAll(req: Request, res: Response) {
+    const users = await User.findAll({
+      attributes: { exclude: ["created_at", "updated_at"] },
+    });
+    res.send(users);
   }
 
-  static async createUser(req: Request, res: Response) {
-    const { name, email, username, phone, website, address, company } = req.body;
-    const newUser = await User.create({ name, email, username, phone, website, address, company });
-    res.status(201).json(newUser);
+  async createUser(req: Request, res: Response) {
+    const request: IUserRequest = req.body;
+    const newUser = await User.create();
+    newUser.name = request.name;
+    newUser.email = request.email;
+    newUser.username = request.username;
+    newUser.phone = request.phone;
+    newUser.website = request.website;
+    newUser.address = request.address;
+    newUser.company = request.company;
+    await newUser.save();
+    res.send(newUser);
   }
 
-  static async getUserById(req: Request, res: Response) {
+  async getUserById(req: Request, res: Response) {
     const userId = req.params.id;
-    const user = await User.findByPk(userId);
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).send("User not found");
-    }
+    const user = await User.findByPk(userId, {
+      attributes: { exclude: ["created_at", "updated_at"] },
+    });
+    res.send(user);
   }
 
-  static async deleteUserById(req:Request, res:Response) {
+  async deleteUserById(req: Request, res: Response) {
     const userId = req.params.id;
-    const deleteUserById = await User.destroy({ where: { id: userId } });
-    res.send({ deleteUserById });
+    const deletedCount = await User.destroy({ where: { id: userId } });
+    res.send({ deletedCount });
   }
 
-  static async updateUserById(req: Request, res: Response) {
+  async updateUserById(req: Request, res: Response) {
     const userId = req.params.id;
-    const { name, email, username, phone, website, address, company } = req.body;
-    const [updated] = await User.update(
-      { name, email, username, phone, website, address, company },
-      { where: { id: userId } }
-    );
-    if (updated) {
-      const updatedUser = await User.findByPk(userId);
-      res.status(200).json(updatedUser);
-    } else {
-      res.status(404).send("User not found");
-    }
+    const request: IUserRequest = req.body;
+    const [updatedCount] = await User.update(request, {
+      where: { id: userId },
+    });
+    res.send({ updatedCount });
   }
 }
+
+export default new UserController();
