@@ -1,5 +1,6 @@
 import { Role } from "@models/role.model";
 import { User } from "@models/user.model";
+import { Category } from "@models/category.model";
 import { Sequelize } from "sequelize-typescript";
 
 const sequelize = new Sequelize({
@@ -10,7 +11,7 @@ const sequelize = new Sequelize({
   password: "",
   database: "demo",
   logging: true,
-  models:[Role, User]
+  models:[Role, User, Category]
 });
 
 export default sequelize;
