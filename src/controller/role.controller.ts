@@ -1,3 +1,4 @@
+import { NotFoundException } from "@exception/NotFoundException";
 import { Role } from "@models/role.model";
 import { Request, Response } from "express";
 
@@ -30,6 +31,9 @@ export class RoleController {
   const role = await Role.findByPk(roleId, {
     attributes: { exclude: ['created_at', 'updated_at'] }
   });
+  if (!role) {
+    throw new NotFoundException("role not found", 404);
+  }
   res.send(role);
 }
 
