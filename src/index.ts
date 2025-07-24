@@ -21,7 +21,15 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/blogs", blogRouter)
 app.use('/docs',swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
 
-app.post("/api/upload", upload.single("file"), function (req, res, next) {
+app.post("/api/upload", upload.fields([
+  {
+    name:'file',
+    maxCount: 1
+  },{
+    name: 'image',
+    maxCount: 1
+  }
+]), function (req, res, next) {
   console.log(req.file);
 });
 
