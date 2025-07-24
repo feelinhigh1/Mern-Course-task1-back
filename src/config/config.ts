@@ -4,6 +4,7 @@ import { Category } from "@models/category.model";
 import { Sequelize } from "sequelize-typescript";
 import { Blog } from "@models/blog.model";
 import { DocumentModel } from "@models/document.model";
+import { Post } from "@models/post.model";
 
 const sequelize = new Sequelize({
   dialect: "postgres",
@@ -13,7 +14,7 @@ const sequelize = new Sequelize({
   password: "",
   database: "demo",
   logging: true,
-  models:[Role, User, Category, Blog, DocumentModel]
+  models:[Role, User, Category, Blog, DocumentModel, Post]
 });
 
 export default sequelize;
