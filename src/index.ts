@@ -18,7 +18,7 @@ app.use(express.json());
 app.use("/api/role", roleRouter);
 app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
-app.use("api/blogs", blogRouter)
+app.use("/api/blogs", blogRouter)
 app.use('/docs',swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
 
 app.post("/api/upload", upload.single("file"), function (req, res, next) {
