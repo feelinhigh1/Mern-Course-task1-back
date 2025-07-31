@@ -38,7 +38,7 @@ class Postcontroller {
       const document = new DocumentModel();
       document.size = files[i].size;
       document.mimeType = files[i].mimetype;
-      document.originalName = files[i].originalname
+      document.originalName = files[i].originalname;
       document.path = files[i].path;
       document.fileName = files[i].filename;
 
@@ -48,13 +48,12 @@ class Postcontroller {
       postImage.postId = post.id;
       postImage.documentId = document.docGuid;
       await postImage.save();
-
     }
 
     res.send({
       message: "Post has been saved successfully",
       status: true,
-      data: post
+      data: post,
     });
   }
 
@@ -79,6 +78,39 @@ class Postcontroller {
     res.send({ deletedCount });
   }
 
+  async getAllPost(req: Request, res: Response) {
+    try {
+      const path = "http://localhost:3000/uploads/";
+      const posts = await Post.sequelize?.query(
+        `
+      SELECT 
+        p.id,
+        p.title,
+        p.slug,
+        p.description,
+        c."name" AS category,
+        u.email AS userEmail,
+        u.username AS user,
+        json_agg(CONCAT(:path, d.file_name)) AS images
+      FROM posts p
+      INNER JOIN categories c ON c.id = p.category_id
+      INNER JOIN users u ON u.id = p.posted_by
+      LEFT JOIN post_image pi ON pi.post_id = p.id
+      LEFT JOIN documents d ON d.doc_guid = pi.document_id::uuid
+      GROUP BY p.id, p.title, p.slug, p.description, c."name", u.email, u.username;
+      `,
+        {
+          type: QueryTypes.SELECT,
+          replacements: { path },
+        }
+      );
+
+      res.status(200).json(posts);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
 }
 
 export default new Postcontroller();

@@ -4,7 +4,8 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/", postController.getAll);
+router.get("/", postController.getAllPost);
+// router.get("/", postController.getAll);
 router.get("/:id", postController.getPostById);
 router.delete("/:id", postController.deletePostById);
 

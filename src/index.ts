@@ -1,3 +1,4 @@
+import path from "path";
 import sequelize from "config/config";
 import express from "express";
 import { roleRouter } from "routes/role.route";
@@ -18,23 +19,28 @@ app.use(express.json());
 app.use("/api/role", roleRouter);
 app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
-app.use("/api/post", postRouter)
-app.use('/docs', swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
+app.use("/api/post", postRouter);
+app.use("/docs", swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
+app.use(express.static(path.join(__dirname, "../public")));
 
-app.post("/api/upload", upload.fields([
-  {
-    name: 'file',
-    maxCount: 1
-  }, {
-    name: 'image',
-    maxCount: 1
+app.post(
+  "/api/upload",
+  upload.fields([
+    {
+      name: "file",
+      maxCount: 1,
+    },
+    {
+      name: "image",
+      maxCount: 1,
+    },
+  ]),
+  function (req, res, next) {
+    console.log(req.file);
   }
-]), function (req, res, next) {
-  console.log(req.file);
-});
+);
 
 app.use(exceptionHandler);
-
 
 sequelize.sync({ alter: true }).then(() => {
   app.listen(3000, () => {
