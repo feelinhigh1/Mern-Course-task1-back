@@ -1,13 +1,13 @@
 import sequelize from "config/config";
 import express from "express";
-import  {roleRouter } from "routes/role.route";
+import { roleRouter } from "routes/role.route";
 import { userRouter } from "routes/user.route";
 import { categoryRouter } from "routes/category.route";
 import swaggerUIExpress from "swagger-ui-express";
 import { swaggerDocs } from "config/swagger";
 import cors from "cors";
 import { exceptionHandler } from "config/exception-filter";
-import { blogRouter } from "@routes/blog.route";
+import { postRouter } from "@routes/post.route";
 import { upload } from "config/multer";
 
 const app = express();
@@ -18,14 +18,14 @@ app.use(express.json());
 app.use("/api/role", roleRouter);
 app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
-app.use("/api/blogs", blogRouter)
-app.use('/docs',swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
+app.use("/api/post", postRouter)
+app.use('/docs', swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
 
 app.post("/api/upload", upload.fields([
   {
-    name:'file',
+    name: 'file',
     maxCount: 1
-  },{
+  }, {
     name: 'image',
     maxCount: 1
   }

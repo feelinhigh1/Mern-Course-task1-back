@@ -23,7 +23,7 @@ export class Post extends Model<Post> {
   public id?: number;
 
   @Column({ field: "title", type: DataType.STRING })
-  public name!: string;
+  public title!: string;
 
   @Column({ field: "description", type: DataType.TEXT })
   public description!: string;
@@ -35,13 +35,13 @@ export class Post extends Model<Post> {
   @Column({ field: "posted_by" })
   public userId!: number;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => Category)
   @Column({ field: "category_id" })
   public categoryId!: number;
 
   @BelongsTo(() => User)
   public user!: User;
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => Category)
   public category!: Category;
 }
