@@ -9,7 +9,7 @@ import { swaggerDocs } from "config/swagger";
 import cors from "cors";
 import { exceptionHandler } from "config/exception-filter";
 import { postRouter } from "@routes/post.route";
-import { upload } from "config/multer";
+// import { upload } from "config/multer";
 
 const app = express();
 
@@ -21,24 +21,24 @@ app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/post", postRouter);
 app.use("/docs", swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.post(
-  "/api/upload",
-  upload.fields([
-    {
-      name: "file",
-      maxCount: 1,
-    },
-    {
-      name: "image",
-      maxCount: 1,
-    },
-  ]),
-  function (req, res, next) {
-    console.log(req.file);
-  }
-);
+// app.post(
+//   "/api/upload",
+//   upload.fields([
+//     {
+//       name: "file",
+//       maxCount: 1,
+//     },
+//     {
+//       name: "image",
+//       maxCount: 1,
+//     },
+//   ]),
+//   function (req, res, next) {
+//     console.log(req.file);
+//   }
+// );
 
 app.use(exceptionHandler);
 

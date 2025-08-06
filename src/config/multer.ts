@@ -18,16 +18,16 @@ const storage = multer.diskStorage({
   },
 });
 
-const fileFilter = (req: Request, file:Express.Multer.File, callback: any) => {
-  const validMimeType = ["image/jpg","image/png","image/jpeg"];
+const fileFilter = (req: Request, file: Express.Multer.File, callback: any) => {
+  const validMimeType = ["image/jpg", "image/png", "image/jpeg"];
   if (validMimeType.includes(file.mimetype)) {
     callback(null, true);
   } else {
     callback(new Error("file format not supported"));
   }
-}
+};
 
 export const upload = multer({
   storage: storage,
-  fileFilter: fileFilter
-})
+  fileFilter: fileFilter,
+});
