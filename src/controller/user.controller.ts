@@ -1,5 +1,6 @@
 import { User } from "@models/user.model";
 import { Request, Response } from "express";
+import * as bcrypt from "bcrypt";
 
 interface IUserRequest {
   name: string;
@@ -7,6 +8,7 @@ interface IUserRequest {
   username: string;
   phone: string;
   website: string;
+  password: string;
   address: {
     street: string;
     suite?: string;
@@ -35,7 +37,8 @@ export class UserController {
     newUser.phone = request.phone;
     newUser.website = request.website;
     newUser.address = request.address;
-    newUser.company = request.company;
+    const hashpassword = await bcrypt.hash(request.password, 10);
+    newUser.password = hashpassword;
     await newUser.save();
     res.send(newUser);
   }

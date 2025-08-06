@@ -9,6 +9,8 @@ import { swaggerDocs } from "config/swagger";
 import cors from "cors";
 import { exceptionHandler } from "config/exception-filter";
 import { postRouter } from "@routes/post.route";
+import { authRouter } from "@routes/auth.route";
+import { jwtMiddleware } from "@middleware/jwt.middleware";
 // import { upload } from "config/multer";
 
 const app = express();
@@ -16,10 +18,12 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
+app.use(jwtMiddleware);
 app.use("/api/role", roleRouter);
 app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/post", postRouter);
+app.use("/api/auth", authRouter);
 app.use("/docs", swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerDocs));
 app.use(express.static(path.join(__dirname, "public")));
 

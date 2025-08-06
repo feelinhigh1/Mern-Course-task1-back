@@ -39,6 +39,9 @@ export class User extends Model<User> {
   public username!: string;
 
   @Column({ type: DataType.STRING })
+  public password!: string;
+
+  @Column({ type: DataType.STRING })
   public phone!: string;
 
   @Column({ type: DataType.STRING })
